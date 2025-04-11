@@ -14,6 +14,8 @@ body {
   text-rendering: optimizeLegibility;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  background-color: #f9fafb; /* light gray */
+  color: #111827; /* dark gray text */
 }
 
 iframe {

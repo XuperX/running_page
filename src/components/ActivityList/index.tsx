@@ -91,49 +91,56 @@ const ActivityCard: React.FC<ActivityCardProps> = ({ period, summary, dailyDista
     const yAxisMax = Math.ceil(Math.max(...data.map(d => parseFloat(d.distance))) + 10); // Round up and add buffer
     const yAxisTicks = Array.from({ length: Math.ceil(yAxisMax / 5) + 1 }, (_, i) => i * 5); // Generate arithmetic sequence
 
-    return (
-        <div className={styles.activityCard}>
-            <h2 className={styles.activityName}>{period}</h2>
-            <div className={styles.activityDetails}>
-                <p><strong>{ACTIVITY_TOTAL.TOTAL_DISTANCE_TITLE}:</strong> {summary.totalDistance.toFixed(2)} km</p>
-                <p><strong>{ACTIVITY_TOTAL.AVERAGE_SPEED_TITLE}:</strong> {activityType === 'ride' ? `${summary.averageSpeed.toFixed(2)} km/h` : formatPace(summary.averageSpeed)}</p>
-                <p><strong>{ACTIVITY_TOTAL.TOTAL_TIME_TITLE}:</strong> {formatTime(summary.totalTime)}</p>
-                {interval !== 'day' && (
-                    <>
-                        <p><strong>{ACTIVITY_TOTAL.ACTIVITY_COUNT_TITLE}:</strong> {summary.count}</p>
-                        <p><strong>{ACTIVITY_TOTAL.MAX_DISTANCE_TITLE}:</strong> {summary.maxDistance.toFixed(2)} km</p>
-                        <p><strong>{ACTIVITY_TOTAL.MAX_SPEED_TITLE}:</strong> {activityType === 'ride' ? `${summary.maxSpeed.toFixed(2)} km/h` : formatPace(summary.maxSpeed)}</p>
-                    </>
-                )}
-                {interval === 'day' && (
-                    <p><strong>{ACTIVITY_TOTAL.LOCATION_TITLE}:</strong> {summary.location || ''}</p>
-                )}
-                {['month', 'week', 'year'].includes(interval) && (
-                    <div className={styles.chart} style={{ height: '250px', width: '100%' }}>
-                        <ResponsiveContainer>
-                            <BarChart data={data} margin={{ top: 20, right: 20, left: -20, bottom: 5 }}>
-                                <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-                                <XAxis dataKey="day" tick={{ fill: 'rgb(204, 204, 204)' }} />
-                                <YAxis
-                                    label={{ value: 'km', angle: -90, position: 'insideLeft', fill: 'rgb(204, 204, 204)' }}
-                                    domain={[0, yAxisMax]}
-                                    ticks={yAxisTicks}
-                                    tick={{ fill: 'rgb(204, 204, 204)' }}
-                                />
-                                <Tooltip
-                                    formatter={(value) => `${value} km`}
-                                    contentStyle={{ backgroundColor: 'rgb(36, 36, 36)', border: '1px solid #444', color: 'rgb(204, 204, 204)' }}
-                                    labelStyle={{ color: 'rgb(224, 237, 94)' }}
-                                />
-                                <Bar dataKey="distance" fill="rgb(224, 237, 94)" />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
-                )}
-            </div>
+return (
+    <div
+        className={styles.activityCard}
+        style={{ backgroundColor: '#F5F5DC', color: 'rgb(20, 163, 199)' }}
+    >
+        <h2 className={styles.activityName}>{period}</h2>
+        <div className={styles.activityDetails}>
+            <p><strong>{ACTIVITY_TOTAL.TOTAL_DISTANCE_TITLE}:</strong> {summary.totalDistance.toFixed(2)} km</p>
+            <p><strong>{ACTIVITY_TOTAL.AVERAGE_SPEED_TITLE}:</strong> {activityType === 'ride' ? `${summary.averageSpeed.toFixed(2)} km/h` : formatPace(summary.averageSpeed)}</p>
+            <p><strong>{ACTIVITY_TOTAL.TOTAL_TIME_TITLE}:</strong> {formatTime(summary.totalTime)}</p>
+            {interval !== 'day' && (
+                <>
+                    <p><strong>{ACTIVITY_TOTAL.ACTIVITY_COUNT_TITLE}:</strong> {summary.count}</p>
+                    <p><strong>{ACTIVITY_TOTAL.MAX_DISTANCE_TITLE}:</strong> {summary.maxDistance.toFixed(2)} km</p>
+                    <p><strong>{ACTIVITY_TOTAL.MAX_SPEED_TITLE}:</strong> {activityType === 'ride' ? `${summary.maxSpeed.toFixed(2)} km/h` : formatPace(summary.maxSpeed)}</p>
+                </>
+            )}
+            {interval === 'day' && (
+                <p><strong>{ACTIVITY_TOTAL.LOCATION_TITLE}:</strong> {summary.location || ''}</p>
+            )}
+            {['month', 'week', 'year'].includes(interval) && (
+                <div className={styles.chart} style={{ height: '250px', width: '100%' }}>
+                    <ResponsiveContainer>
+                        <BarChart data={data} margin={{ top: 20, right: 20, left: -20, bottom: 5 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke="gray" />
+                            <XAxis dataKey="day" tick={{ fill: 'gray' }} />
+                            <YAxis
+                                label={{ value: 'km', angle: -90, position: 'insideLeft', fill: 'gray' }}
+                                domain={[0, yAxisMax]}
+                                ticks={yAxisTicks}
+                                tick={{ fill: 'gray' }}
+                            />
+                            <Tooltip
+                                formatter={(value) => `${value} km`}
+                                contentStyle={{
+                                    backgroundColor: '#F5F5DC',
+                                    border: '1px solid gray',
+                                    color: 'rgb(20, 163, 199)',
+                                }}
+                                labelStyle={{ color: 'gray' }}
+                            />
+                            <Bar dataKey="distance" fill="rgb(20, 163, 199)" />
+                        </BarChart>
+                    </ResponsiveContainer>
+                </div>
+            )}
         </div>
-    );
-};
+    </div>
+);
+
 
 const ActivityList: React.FC = () => {
     const [interval, setInterval] = useState<IntervalType>('month');
